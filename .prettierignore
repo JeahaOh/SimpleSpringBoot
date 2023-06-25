@@ -1,0 +1,9 @@
+build
+**/.git
+**/.gitignore
+*.md
+*.yaml
+*.min.css
+*.min.css.map
+*.min.js
+*.min.js.map
