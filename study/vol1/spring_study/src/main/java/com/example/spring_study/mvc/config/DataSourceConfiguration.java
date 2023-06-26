@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.sql.DataSource;
 
 /**
+ * MyBatis 설정
  * Created by jeaha on 2023/06/17
  */
 @Configuration

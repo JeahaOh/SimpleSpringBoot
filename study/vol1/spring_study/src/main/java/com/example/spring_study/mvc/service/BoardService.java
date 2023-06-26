@@ -1,6 +1,7 @@
 package com.example.spring_study.mvc.service;
 
-import com.example.spring_study.mvc.domain.Board;
+import com.example.spring_study.mvc.dto.BoardRequest;
+import com.example.spring_study.mvc.vo.Board;
 import com.example.spring_study.mvc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,18 +36,16 @@ public class BoardService {
     
     /**
      * 게시판 저장 처리.
-     * @param board
+     * @param parameter
      */
-    public void save(Board board) {
-        repository.save(board);
-    }
-    
-    /**
-     * 게시판 수정 처리.
-     * @param board
-     */
-    public void update(Board board) {
-        repository.update(board);
+    public int save(BoardRequest parameter) {
+        Board board = repository.get(parameter.getBoardSeq());
+        if (board == null) {
+            repository.save(parameter);
+        } else {
+            repository.update(parameter);
+        }
+        return parameter.getBoardSeq();
     }
     
     /**

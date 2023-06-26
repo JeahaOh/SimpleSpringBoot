@@ -1,7 +1,12 @@
 package com.example.spring_study.mvc.controller;
 
-import com.example.spring_study.mvc.domain.Board;
+import com.example.spring_study.mvc.dto.BoardRequest;
+import com.example.spring_study.mvc.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,46 +16,70 @@ import java.util.List;
  * Created by jeaha on 2023/06/17
  */
 @RequiredArgsConstructor
+@Api(tags = "Board API ")
 @RestController
 @RequestMapping("/board")
 public class BoardController {
- 
- private final BoardService service;
- 
- /**
-  * 게시판 목록 리턴.
-  * @return
-  */
- @GetMapping
- public List<Board> getList() {
-  return service.getList();
- }
- 
- /**
-  * 게시판 상세정보 리턴.
-  * @param boardSeq
-  * @return
-  */
- @GetMapping("/{boardSeq}")
- public Board get(@PathVariable int boardSeq) {
-  return service.get(boardSeq);
- }
- 
- /**
-  * 게시판 저장/수정 처리.
-  * @param board
-  */
- @PostMapping("/save")
- public void save(Board board) {
-  service.save(board);
- }
- 
- /**
-  * 게시판 삭제 처리.
-  * @param boardSeq
-  */
- @DeleteMapping("/delete/{boardSeq}")
- public void delete(@PathVariable int boardSeq) {
-  service.delete(boardSeq);
- }
+    
+    private final BoardService service;
+    
+    /**
+     * 게시판 목록 리턴.
+     *
+     * @return
+     */
+    @ApiOperation(value = "select list", notes = "게시물 목록 조회.")
+    @GetMapping
+    public List<Board> getList() {
+        return service.getList();
+    }
+    
+    /**
+     * 게시판 상세정보 리턴.
+     *
+     * @param boardSeq
+     * @return
+     */
+    @ApiOperation(value = "select board detail", notes = "게시물 번호에 해당하는 상세 정보를 조회할 수 있음.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")
+    })
+    @GetMapping("/{boardSeq}")
+    public Board get(@PathVariable int boardSeq) {
+        return service.get(boardSeq);
+    }
+    
+    /**
+     * 게시판 저장/수정 처리.
+     *
+     * @param parameter
+     */
+    @ApiOperation(value = "save or update board", notes = "신규 게시물 저장 및 기존 게시물 수정 가능.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "boardSeq", value = "게시물 번호", example = "1"),
+            @ApiImplicitParam(name = "title", value = "제목", example = "샘플 제목"),
+            @ApiImplicitParam(name = "contents", value = "내용", example = "샘플 내용")
+    })
+    @PostMapping("/save")
+    public int save(BoardRequest parameter) {
+        service.save(parameter);
+        return parameter.getBoardSeq();
+    }
+    
+    /**
+     * 게시판 삭제 처리.
+     *
+     * @param boardSeq
+     */
+    @ApiOperation(value = "delete board", notes = "게시물 번호에 해당하는 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")
+    })
+    @DeleteMapping("/delete/{boardSeq}")
+    public boolean delete(@PathVariable int boardSeq) {
+        Board board = service.get(boardSeq);
+        if (board == null) return false;
+        service.delete(boardSeq);
+        return true;
+    }
 }

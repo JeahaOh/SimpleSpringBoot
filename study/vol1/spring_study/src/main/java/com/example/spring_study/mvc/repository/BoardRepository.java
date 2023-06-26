@@ -1,6 +1,7 @@
 package com.example.spring_study.mvc.repository;
 
-import com.example.spring_study.mvc.domain.Board;
+import com.example.spring_study.mvc.dto.BoardRequest;
+import com.example.spring_study.mvc.vo.Board;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface BoardRepository {
     List<Board> getList();
     Board get(int boardSeq);
-    void save(Board board);
-    void update(Board board);
+    int save(BoardRequest board);
+    int update(BoardRequest board);
     void delete(int boardSeq);
 }
