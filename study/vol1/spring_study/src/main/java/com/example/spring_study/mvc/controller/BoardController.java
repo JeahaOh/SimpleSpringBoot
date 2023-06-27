@@ -1,5 +1,6 @@
 package com.example.spring_study.mvc.controller;
 
+import com.example.spring_study.mvc.common.CommonResponse;
 import com.example.spring_study.mvc.dto.BoardRequest;
 import com.example.spring_study.mvc.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
@@ -30,8 +31,8 @@ public class BoardController {
      */
     @ApiOperation(value = "select list", notes = "게시물 목록 조회.")
     @GetMapping
-    public List<Board> getList() {
-        return service.getList();
+    public CommonResponse<List<Board>> getList() {
+        return new CommonResponse<>(service.getList());
     }
     
     /**
@@ -45,8 +46,8 @@ public class BoardController {
             @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")
     })
     @GetMapping("/{boardSeq}")
-    public Board get(@PathVariable int boardSeq) {
-        return service.get(boardSeq);
+    public CommonResponse<Board> get(@PathVariable int boardSeq) {
+        return new CommonResponse<>(service.get(boardSeq));
     }
     
     /**
@@ -61,9 +62,9 @@ public class BoardController {
             @ApiImplicitParam(name = "contents", value = "내용", example = "샘플 내용")
     })
     @PostMapping("/save")
-    public int save(BoardRequest parameter) {
+    public CommonResponse<Integer> save(BoardRequest parameter) {
         service.save(parameter);
-        return parameter.getBoardSeq();
+        return new CommonResponse<>(parameter.getBoardSeq());
     }
     
     /**
@@ -76,10 +77,10 @@ public class BoardController {
             @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")
     })
     @DeleteMapping("/delete/{boardSeq}")
-    public boolean delete(@PathVariable int boardSeq) {
+    public CommonResponse<Boolean> delete(@PathVariable int boardSeq) {
         Board board = service.get(boardSeq);
-        if (board == null) return false;
+        if (board == null) return new CommonResponse<>(false);
         service.delete(boardSeq);
-        return true;
+        return new CommonResponse<>(true);
     }
 }
