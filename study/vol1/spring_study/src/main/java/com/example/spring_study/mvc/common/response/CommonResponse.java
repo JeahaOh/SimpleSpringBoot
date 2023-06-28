@@ -1,6 +1,7 @@
-package com.example.spring_study.mvc.common;
+package com.example.spring_study.mvc.common.response;
 
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * Created by jeaha on 2023/06/22
@@ -14,5 +15,10 @@ public class CommonResponse<T> {
     public CommonResponse(T data) {
         this.code = CommonResponseCode.SUCCESS;
         this.data = data;
+    }
+    
+    public CommonResponse(CommonResponseCode code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

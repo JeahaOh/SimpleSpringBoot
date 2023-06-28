@@ -1,6 +1,8 @@
 package com.example.spring_study.mvc.controller;
 
-import com.example.spring_study.mvc.common.CommonResponse;
+import com.example.spring_study.mvc.common.exception.CommonException;
+import com.example.spring_study.mvc.common.response.CommonResponse;
+import com.example.spring_study.mvc.common.response.CommonResponseCode;
 import com.example.spring_study.mvc.dto.BoardRequest;
 import com.example.spring_study.mvc.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
@@ -9,6 +11,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +50,13 @@ public class BoardController {
     })
     @GetMapping("/{boardSeq}")
     public CommonResponse<Board> get(@PathVariable int boardSeq) {
-        return new CommonResponse<>(service.get(boardSeq));
+        Board board = service.get(boardSeq);
+        
+        if (board == null) {
+            throw new CommonException(CommonResponseCode.DATA_IS_NULL, new String[] {"게시물"});
+        }
+        
+        return new CommonResponse<>(board);
     }
     
     /**
@@ -63,6 +72,14 @@ public class BoardController {
     })
     @PostMapping("/save")
     public CommonResponse<Integer> save(BoardRequest parameter) {
+        
+        if (StringUtils.isEmpty(parameter.getTitle())) {
+            throw new CommonException(CommonResponseCode.VALIDATE_REQUIRED, new String[] {"title", "제목"});
+        }
+        if (StringUtils.isEmpty(parameter.getContents())) {
+            throw new CommonException(CommonResponseCode.VALIDATE_REQUIRED, new String[] {"contents", "내용"});
+        }
+        
         service.save(parameter);
         return new CommonResponse<>(parameter.getBoardSeq());
     }
