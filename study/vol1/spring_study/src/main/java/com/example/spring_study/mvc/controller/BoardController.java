@@ -11,14 +11,18 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by jeaha on 2023/06/17
  */
+@Slf4j
 @RequiredArgsConstructor
 @Api(tags = "Board API ")
 @RestController
@@ -82,6 +86,62 @@ public class BoardController {
         
         service.save(parameter);
         return new CommonResponse<>(parameter.getBoardSeq());
+    }
+    
+    /**
+     * 자바 반복문을 이용한 대용량 등록 처리 test
+     * @return
+     */
+    @ApiOperation( value = "save objects with java loop", notes = "자바 반복문을 이용한 대용량 등록 처리")
+    @PutMapping("/saveListAsJavaLoop")
+    public CommonResponse<Boolean> saveListAsJavaLoop() {
+        int count = 0;
+        List<BoardRequest> list = new ArrayList<>();
+        while (true) {
+            count++;
+            String title = RandomStringUtils.randomAlphabetic(10);
+            String contents = RandomStringUtils.randomAlphabetic(10);
+            
+            list.add(new BoardRequest(title, contents));
+            if (count >= 10000) {
+                break;
+            }
+        }
+        
+        long bgnTime = System.currentTimeMillis();
+        service.saveListAsJavaLoop(list);
+        long endTime = System.currentTimeMillis();
+        log.debug("WASTE TIME : {}", (endTime - bgnTime) / 1000.0);
+        
+        return new CommonResponse<>(true);
+    }
+    
+    /**
+     * MyBatis를 이용한 대용량 등록 처리 test
+     * @return
+     */
+    @ApiOperation( value = "save objects with MyBatis loop", notes = "MyBatis를 이용한 대용량 등록 처리")
+    @PutMapping("/saveListAsMyBatisLoop")
+    public CommonResponse<Boolean> saveListAsMyBatisLoop() {
+        int count = 0;
+        List<BoardRequest> list = new ArrayList<>();
+        while (true) {
+            count++;
+            String title = RandomStringUtils.randomAlphabetic(10);
+            String contents = RandomStringUtils.randomAlphabetic(10);
+            
+            list.add(new BoardRequest(title, contents));
+            if (count >= 10000) {
+                break;
+            }
+        }
+        
+        long bgnTime = System.currentTimeMillis();
+        service.saveListAsMybatisLoop(list);
+        long endTime = System.currentTimeMillis();
+        log.debug("WASTE TIME : {}", (endTime - bgnTime) / 1000.0);
+        
+        return new CommonResponse<>(true);
     }
     
     /**

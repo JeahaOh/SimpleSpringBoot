@@ -6,7 +6,9 @@ import com.example.spring_study.mvc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jeaha on 2023/06/17
@@ -48,6 +50,23 @@ public class BoardService {
         return parameter.getBoardSeq();
     }
     
+    /**
+     * 단순 반복문을 이용한 등록 처리
+     */
+    public void saveListAsJavaLoop(List<BoardRequest> list) {
+        for (BoardRequest boardRequest : list) {
+            repository.save(boardRequest);
+        }
+    }
+    
+    /**
+     * 100개씩 배역에 담아서 일괄 등록 처리
+     */
+    public void saveListAsMybatisLoop(List<BoardRequest> boardList) {
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("boardList", boardList);
+        repository.saveList(paramMap);
+    }
     /**
      * 게시판 삭제 처리.
      * @param boardSeq

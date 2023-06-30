@@ -5,6 +5,7 @@ import com.example.spring_study.mvc.vo.Board;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by jeaha on 2023/06/17
@@ -14,6 +15,7 @@ public interface BoardRepository {
     List<Board> getList();
     Board get(int boardSeq);
     int save(BoardRequest board);
+    void saveList(Map<String, Object> paramMap);
     int update(BoardRequest board);
     void delete(int boardSeq);
 }

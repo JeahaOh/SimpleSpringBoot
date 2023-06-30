@@ -10,4 +10,10 @@ public class BoardRequest {
     private int boardSeq;
     private String title;
     private String contents;
+    
+    public BoardRequest() {}
+    public BoardRequest(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }
