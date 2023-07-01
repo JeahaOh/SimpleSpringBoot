@@ -1,6 +1,7 @@
 package com.example.spring_study.mvc.service;
 
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,8 @@ public class BoardService {
      * 게시판 목록 리턴.
      * @return
      */
-    public List<Board> getList() {
-        return repository.getList();
+    public List<Board> getList(BoardSearchRequest parameter) {
+        return repository.getList(parameter);
     }
     
     /**

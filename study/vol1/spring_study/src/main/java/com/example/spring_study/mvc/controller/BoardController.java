@@ -4,6 +4,7 @@ import com.example.spring_study.mvc.common.exception.CommonException;
 import com.example.spring_study.mvc.common.response.CommonResponse;
 import com.example.spring_study.mvc.common.response.CommonResponseCode;
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.type.BoardType;
 import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
@@ -39,8 +40,8 @@ public class BoardController {
      */
     @ApiOperation(value = "select list", notes = "게시물 목록 조회.")
     @GetMapping
-    public CommonResponse<List<Board>> getList() {
-        return new CommonResponse<>(service.getList());
+    public CommonResponse<List<Board>> getList(BoardSearchRequest parameter) {
+        return new CommonResponse<>(service.getList(parameter));
     }
     
     /**

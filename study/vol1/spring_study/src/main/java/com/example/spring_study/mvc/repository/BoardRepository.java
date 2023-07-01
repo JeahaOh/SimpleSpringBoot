@@ -1,6 +1,7 @@
 package com.example.spring_study.mvc.repository;
 
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.vo.Board;
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 @Repository
 public interface BoardRepository {
-    List<Board> getList();
+    List<Board> getList(BoardSearchRequest parameter);
     Board get(int boardSeq);
     int save(BoardRequest board);
     void saveList(Map<String, Object> paramMap);
