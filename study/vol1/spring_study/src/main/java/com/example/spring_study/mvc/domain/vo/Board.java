@@ -1,5 +1,6 @@
-package com.example.spring_study.mvc.vo;
+package com.example.spring_study.mvc.domain.vo;
 
+import com.example.spring_study.mvc.domain.type.BoardType;
 import lombok.Data;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Data
 public class Board {
     private int boardSeq;
+    private BoardType boardType;
     private String title;
     private String contents;
     private Date regData;

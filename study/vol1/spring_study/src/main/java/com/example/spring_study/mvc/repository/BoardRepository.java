@@ -1,7 +1,7 @@
 package com.example.spring_study.mvc.repository;
 
-import com.example.spring_study.mvc.dto.BoardRequest;
-import com.example.spring_study.mvc.vo.Board;
+import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.vo.Board;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

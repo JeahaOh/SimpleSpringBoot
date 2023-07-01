@@ -3,8 +3,9 @@ package com.example.spring_study.mvc.controller;
 import com.example.spring_study.mvc.common.exception.CommonException;
 import com.example.spring_study.mvc.common.response.CommonResponse;
 import com.example.spring_study.mvc.common.response.CommonResponseCode;
-import com.example.spring_study.mvc.dto.BoardRequest;
-import com.example.spring_study.mvc.vo.Board;
+import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.type.BoardType;
+import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -99,10 +100,11 @@ public class BoardController {
         List<BoardRequest> list = new ArrayList<>();
         while (true) {
             count++;
+            BoardType boardType = BoardType.genRandom();
             String title = RandomStringUtils.randomAlphabetic(10);
             String contents = RandomStringUtils.randomAlphabetic(10);
             
-            list.add(new BoardRequest(title, contents));
+            list.add(new BoardRequest(boardType, title, contents));
             if (count >= 10000) {
                 break;
             }
@@ -127,10 +129,11 @@ public class BoardController {
         List<BoardRequest> list = new ArrayList<>();
         while (true) {
             count++;
+            BoardType boardType = BoardType.genRandom();
             String title = RandomStringUtils.randomAlphabetic(10);
             String contents = RandomStringUtils.randomAlphabetic(10);
             
-            list.add(new BoardRequest(title, contents));
+            list.add(new BoardRequest(boardType, title, contents));
             if (count >= 10000) {
                 break;
             }

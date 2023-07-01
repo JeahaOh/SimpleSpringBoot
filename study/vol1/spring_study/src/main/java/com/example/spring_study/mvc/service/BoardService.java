@@ -1,7 +1,7 @@
 package com.example.spring_study.mvc.service;
 
-import com.example.spring_study.mvc.dto.BoardRequest;
-import com.example.spring_study.mvc.vo.Board;
+import com.example.spring_study.mvc.domain.dto.BoardRequest;
+import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
