@@ -3,6 +3,7 @@ package com.example.spring_study.mvc.controller;
 import com.example.spring_study.mvc.common.exception.CommonException;
 import com.example.spring_study.mvc.common.response.CommonResponse;
 import com.example.spring_study.mvc.common.response.CommonResponseCode;
+import com.example.spring_study.mvc.config.web.bind.RequestConfig;
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
 import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.type.BoardType;
@@ -76,6 +77,7 @@ public class BoardController {
             @ApiImplicitParam(name = "title", value = "제목", example = "샘플 제목"),
             @ApiImplicitParam(name = "contents", value = "내용", example = "샘플 내용")
     })
+    @RequestConfig
     @PostMapping("/save")
     public CommonResponse<Integer> save(BoardRequest parameter) {
         
@@ -94,6 +96,7 @@ public class BoardController {
      * 자바 반복문을 이용한 대용량 등록 처리 test
      * @return
      */
+    @RequestConfig
     @ApiOperation( value = "save objects with java loop", notes = "자바 반복문을 이용한 대용량 등록 처리")
     @PutMapping("/saveListAsJavaLoop")
     public CommonResponse<Boolean> saveListAsJavaLoop() {
@@ -123,6 +126,7 @@ public class BoardController {
      * MyBatis를 이용한 대용량 등록 처리 test
      * @return
      */
+    @RequestConfig
     @ApiOperation( value = "save objects with MyBatis loop", notes = "MyBatis를 이용한 대용량 등록 처리")
     @PutMapping("/saveListAsMyBatisLoop")
     public CommonResponse<Boolean> saveListAsMyBatisLoop() {
@@ -153,6 +157,7 @@ public class BoardController {
      *
      * @param boardSeq
      */
+    @RequestConfig
     @ApiOperation(value = "delete board", notes = "게시물 번호에 해당하는 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")
