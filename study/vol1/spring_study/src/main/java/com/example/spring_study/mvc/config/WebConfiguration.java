@@ -1,6 +1,7 @@
 package com.example.spring_study.mvc.config;
 
 import com.example.spring_study.mvc.common.interceptor.LoggingInterceptor;
+import com.example.spring_study.mvc.config.web.PageRequestHandleMethodArgumentResolver;
 import com.example.spring_study.mvc.domain.type.CommonCodeLabelEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -8,10 +9,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.MediaType;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -60,5 +63,10 @@ public class WebConfiguration implements WebMvcConfigurer {
         jsonView.setObjectMapper(objectMapper());
         
         return jsonView;
+    }
+    
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new PageRequestHandleMethodArgumentResolver());
     }
 }

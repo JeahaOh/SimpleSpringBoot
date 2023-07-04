@@ -4,15 +4,14 @@ import com.example.spring_study.mvc.common.exception.CommonException;
 import com.example.spring_study.mvc.common.response.CommonResponse;
 import com.example.spring_study.mvc.common.response.CommonResponseCode;
 import com.example.spring_study.mvc.config.web.bind.RequestConfig;
+import com.example.spring_study.mvc.domain.common.PageRequestParameter;
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
 import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
+import com.example.spring_study.mvc.domain.dto.PageRequest;
 import com.example.spring_study.mvc.domain.type.BoardType;
 import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.service.BoardService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -41,8 +40,13 @@ public class BoardController {
      */
     @ApiOperation(value = "select list", notes = "게시물 목록 조회.")
     @GetMapping
-    public CommonResponse<List<Board>> getList(BoardSearchRequest parameter) {
-        return new CommonResponse<>(service.getList(parameter));
+    public CommonResponse<List<Board>> getList(
+            @ApiParam BoardSearchRequest parameter,
+            @ApiParam PageRequest pageRequest
+            ) {
+        log.debug("pageRequest : {}", pageRequest);
+        PageRequestParameter<BoardSearchRequest> pageRequestParameter = new PageRequestParameter<>(pageRequest, parameter);
+        return new CommonResponse<>(service.getList(pageRequestParameter));
     }
     
     /**
@@ -77,7 +81,6 @@ public class BoardController {
             @ApiImplicitParam(name = "title", value = "제목", example = "샘플 제목"),
             @ApiImplicitParam(name = "contents", value = "내용", example = "샘플 내용")
     })
-    @RequestConfig
     @PostMapping("/save")
     public CommonResponse<Integer> save(BoardRequest parameter) {
         
@@ -157,7 +160,6 @@ public class BoardController {
      *
      * @param boardSeq
      */
-    @RequestConfig
     @ApiOperation(value = "delete board", notes = "게시물 번호에 해당하는 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "boardSeq", value = "board no", example = "1")

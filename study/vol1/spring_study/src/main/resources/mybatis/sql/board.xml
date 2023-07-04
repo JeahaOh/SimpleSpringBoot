@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring_study.mvc.repository.BoardRepository">
-    <select id="getList" resultType="com.example.spring_study.mvc.domain.vo.Board">
+    <select
+            id="getList"
+            parameterType="com.example.spring_study.mvc.domain.common.PageRequestParameter"
+            resultType="com.example.spring_study.mvc.domain.vo.Board"
+    >
         SELECT
             B.BOARD_SEQ,
             B.BOARD_TYPE,
@@ -10,18 +14,19 @@
             B.REG_DATE
         FROM T_BOARD B
         <where>
-            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(keyword)">
-                AND B.TITLE LIKE CONCAT('%', #{keyword}, '%')
+            <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.keyword)">
+                AND B.TITLE LIKE CONCAT('%', #{parameter.keyword}, '%')
             </if>
-            <if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(boardTypes)">
+            <if test="@org.apache.commons.lang3.ObjectUtils@isNotEmpty(parameter.boardTypes)">
                 AND B.BOARD_TYPE IN (
-                    <foreach collection="boardTypes" item="value" separator=",">
+                    <foreach collection="parameter.boardTypes" item="value" separator=",">
                         #{value}
                     </foreach>
                 )
             </if>
         </where>
-        ORDER BY B.REG_DATE DESC
+        ORDER BY B.REG_DATE DESC, B.BOARD_SEQ DESC
+        OFFSET #{pageRequest.limit} ROWS FETCH FIRST #{pageRequest.offset} ROWS ONLY
     </select>
 
     <select id="get" parameterType="int" resultType="com.example.spring_study.mvc.domain.vo.Board">

@@ -1,5 +1,6 @@
 package com.example.spring_study.mvc.service;
 
+import com.example.spring_study.mvc.domain.common.PageRequestParameter;
 import com.example.spring_study.mvc.domain.dto.BoardRequest;
 import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.vo.Board;
@@ -24,8 +25,8 @@ public class BoardService {
      * 게시판 목록 리턴.
      * @return
      */
-    public List<Board> getList(BoardSearchRequest parameter) {
-        return repository.getList(parameter);
+    public List<Board> getList(PageRequestParameter<BoardSearchRequest> pageRequestParameter) {
+        return repository.getList(pageRequestParameter);
     }
     
     /**
