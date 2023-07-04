@@ -19,14 +19,19 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("preHandle requestURI : {}", request.getRequestURI());
+        
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             log.info("HandlerMethod : {}", handlerMethod);
+            
             RequestConfig requestConfig = handlerMethod.getMethodAnnotation(RequestConfig.class);
-            if (requestConfig != null || requestConfig.loginCheck()) {
-                throw new CommonException(CommonResponseCode.LOGIN_REQUIRED, new String[] {request.getRequestURI()});
+            log.debug("requestConfig : {}, !null : {}, !loginCheck : {}", requestConfig, requestConfig != null, requestConfig.loginCheck());
+            
+            if (requestConfig != null && !requestConfig.loginCheck()) {
+                throw new CommonException(CommonResponseCode.LOGIN_REQUIRED, new String[]{request.getRequestURI()});
             }
         }
+        
         return true;
     }
     

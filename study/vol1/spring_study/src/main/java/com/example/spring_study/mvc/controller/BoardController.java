@@ -112,7 +112,7 @@ public class BoardController {
             String contents = RandomStringUtils.randomAlphabetic(10);
             
             list.add(new BoardRequest(boardType, title, contents));
-            if (count >= 10000) {
+            if (count >= 10) {
                 break;
             }
         }
@@ -142,7 +142,7 @@ public class BoardController {
             String contents = RandomStringUtils.randomAlphabetic(10);
             
             list.add(new BoardRequest(boardType, title, contents));
-            if (count >= 10000) {
+            if (count >= 10) {
                 break;
             }
         }

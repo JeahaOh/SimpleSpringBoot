@@ -2,6 +2,7 @@ package com.example.spring_study.mvc.config.web;
 
 import com.example.spring_study.mvc.common.exception.CommonException;
 import com.example.spring_study.mvc.common.response.CommonResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -15,9 +16,9 @@ import org.springframework.web.context.request.WebRequest;
  * Created by jeaha on 2023/06/27
  */
 @ControllerAdvice
+@RequiredArgsConstructor
 public class CommonControllerAdvice {
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
     
     @ExceptionHandler(value = {CommonException.class})
     @ResponseStatus(HttpStatus.OK)
