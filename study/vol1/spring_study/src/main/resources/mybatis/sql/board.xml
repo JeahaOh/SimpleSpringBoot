@@ -6,6 +6,7 @@
             parameterType="com.example.spring_study.mvc.domain.common.PageRequestParameter"
             resultType="com.example.spring_study.mvc.domain.vo.Board"
     >
+        /* BoardRepository.getList BGN */
         SELECT
             B.BOARD_SEQ,
             B.BOARD_TYPE,
@@ -27,9 +28,15 @@
         </where>
         ORDER BY B.REG_DATE DESC, B.BOARD_SEQ DESC
         OFFSET #{pageRequest.limit} ROWS FETCH FIRST #{pageRequest.offset} ROWS ONLY
+        /* BoardRepository.getList END */
     </select>
 
-    <select id="get" parameterType="int" resultType="com.example.spring_study.mvc.domain.vo.Board">
+    <select
+            id="get"
+            parameterType="int"
+            resultType="com.example.spring_study.mvc.domain.vo.Board"
+    >
+        /* BoardRepository.get BGN */
         SELECT
             B.BOARD_SEQ,
             B.BOARD_TYPE,
@@ -38,9 +45,11 @@
             B.REG_DATE
         FROM T_BOARD B
         WHERE B.BOARD_SEQ = #{boardSeq}
+        /* BoardRepository.get END */
     </select>
 
     <insert id="save" parameterType="com.example.spring_study.mvc.domain.dto.BoardRequest" useGeneratedKeys="true" keyProperty="boardSeq">
+        /* BoardRepository.save BGN */
         INSERT INTO T_BOARD (
             BOARD_TYPE,
             TITLE,
@@ -52,8 +61,11 @@
             #{contents},
             NOW()
         )
+        /* BoardRepository.save END */
     </insert>
+
     <insert id="saveList" parameterType="map">
+        /* BoardRepository.saveList BGN */
         INSERT INTO T_BOARD (
             BOARD_TYPE,
             TITLE,
@@ -68,19 +80,24 @@
             NOW()
         )
         </foreach>
+        /* BoardRepository.saveList END */
     </insert>
 
     <update id="update" parameterType="com.example.spring_study.mvc.domain.dto.BoardRequest">
+        /* BoardRepository.update BGN */
         UPDATE T_BOARD
         SET
             BOARD_TYPE = #{boardType.code},
             TITLE = #{title},
             CONTENTS = #{contents}
         WHERE BOARD_SEQ = #{boardSeq}
+        /* BoardRepository.update END */
     </update>
 
     <delete id="delete" parameterType="int">
+        /* BoardRepository.delete BGN */
         DELETE FROM T_BOARD
         WHERE BOARD_SEQ = #{boardSeq}
+        /* BoardRepository.delete END */
     </delete>
 </mapper>
