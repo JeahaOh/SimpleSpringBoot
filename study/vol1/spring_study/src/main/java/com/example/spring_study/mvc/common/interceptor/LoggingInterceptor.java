@@ -22,14 +22,17 @@ public class LoggingInterceptor extends HandlerInterceptorAdapter {
         
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
-            log.info("HandlerMethod : {}", handlerMethod);
+            log.info("HandlerMethod : {}, has request config : {}", handlerMethod.hashCode(), handlerMethod.hasMethodAnnotation(RequestConfig.class));
             
-            RequestConfig requestConfig = handlerMethod.getMethodAnnotation(RequestConfig.class);
-            log.debug("requestConfig : {}, !null : {}, !loginCheck : {}", requestConfig, requestConfig != null, requestConfig.loginCheck());
-            
-            if (requestConfig != null && !requestConfig.loginCheck()) {
-                throw new CommonException(CommonResponseCode.LOGIN_REQUIRED, new String[]{request.getRequestURI()});
+            if (handlerMethod.hasMethodAnnotation(RequestConfig.class)) {
+                RequestConfig requestConfig = handlerMethod.getMethodAnnotation(RequestConfig.class);
+                log.debug("requestConfig : {}, !null : {}, !loginCheck : {}", requestConfig, requestConfig != null, requestConfig.loginCheck());
+                
+                if (requestConfig != null && !requestConfig.loginCheck()) {
+                    throw new CommonException(CommonResponseCode.LOGIN_REQUIRED, new String[]{request.getRequestURI()});
+                }
             }
+            
         }
         
         return true;

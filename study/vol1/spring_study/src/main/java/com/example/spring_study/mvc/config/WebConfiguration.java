@@ -69,4 +69,9 @@ public class WebConfiguration implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new PageRequestHandleMethodArgumentResolver());
     }
+    
+    @Bean
+    public GlobalConfig config() {
+        return new GlobalConfig();
+    }
 }
