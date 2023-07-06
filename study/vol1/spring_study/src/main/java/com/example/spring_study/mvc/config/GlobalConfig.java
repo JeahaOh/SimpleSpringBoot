@@ -1,9 +1,11 @@
 package com.example.spring_study.mvc.config;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -18,6 +20,7 @@ import java.util.Properties;
  * Created by jeaha on 2023/06/25
  */
 @Slf4j
+@Getter
 public class GlobalConfig {
     @Autowired
     ApplicationContext context;
@@ -30,6 +33,8 @@ public class GlobalConfig {
     private boolean isLocal;
     private boolean isDev;
     private boolean isProd;
+    
+    private String sampleSchedule;
     
     @PostConstruct
     public void init() {
@@ -52,8 +57,11 @@ public class GlobalConfig {
             Properties properties = PropertiesLoaderUtils.loadProperties(resource);
             log.debug("properties : {}", properties);
             
-            uploadFilePath =  properties.getProperty("uploadFile.path");
+            uploadFilePath = properties.getProperty("uploadFile.path");
             // log.debug("uploadFilePath : {}", uploadFilePath);
+            
+            sampleSchedule = properties.getProperty("scheduler.sample");
+            log.debug("sampleSchedule : {}", sampleSchedule);
             
             this.isLocal = activeProfile.equals("local");
             this.isDev = activeProfile.equals("dev");
@@ -63,11 +71,6 @@ public class GlobalConfig {
             e.printStackTrace();
         }
     }
-    
-    public String getUploadFilePath() {
-        return uploadFilePath;
-    }
-    
     public boolean isLocal() {
         return isLocal;
     }
@@ -79,4 +82,11 @@ public class GlobalConfig {
     public boolean isProd() {
         return isLocal;
     }
+    
+    @Bean
+    public String getSampleSchedule() {
+        return this.sampleSchedule;
+    }
+    
+    
 }
