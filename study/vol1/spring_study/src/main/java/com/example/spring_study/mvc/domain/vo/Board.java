@@ -19,4 +19,5 @@ public class Board {
     private String title;
     private String contents;
     private Date regData;
+    private boolean delYn;
 }

@@ -6,6 +6,7 @@ import com.example.spring_study.mvc.domain.dto.BoardSearchRequest;
 import com.example.spring_study.mvc.domain.vo.Board;
 import com.example.spring_study.mvc.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * Created by jeaha on 2023/06/17
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BoardService {
@@ -45,6 +47,7 @@ public class BoardService {
     public int save(BoardRequest parameter) {
         Board board = repository.get(parameter.getBoardSeq());
         if (board == null) {
+            log.debug("parameter : {}", parameter);
             repository.save(parameter);
         } else {
             repository.update(parameter);

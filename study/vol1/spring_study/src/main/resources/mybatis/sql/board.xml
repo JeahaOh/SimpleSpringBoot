@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spring_study.mvc.repository.BoardRepository">
+    <resultMap
+            id="getListResultMap"
+            type="com.example.spring_study.mvc.domain.vo.Board"
+    >
+        <result column="DEL_YN" property="delYn" typeHandler="com.example.spring_study.mvc.config.mybatis.typehandler.StringValueBooleanTypeHandler" />
+    </resultMap>
+
     <select
             id="getList"
             parameterType="com.example.spring_study.mvc.domain.common.PageRequestParameter"
-            resultType="com.example.spring_study.mvc.domain.vo.Board"
+            resultMap="getListResultMap"
     >
         /* BoardRepository.getList BGN */
         SELECT
@@ -12,7 +19,8 @@
             B.BOARD_TYPE,
             B.TITLE,
             B.CONTENTS,
-            B.REG_DATE
+            B.REG_DATE,
+            B.DEL_YN
         FROM T_BOARD B
         <where>
             <if test="@org.apache.commons.lang3.StringUtils@isNotEmpty(parameter.keyword)">
@@ -48,17 +56,26 @@
         /* BoardRepository.get END */
     </select>
 
-    <insert id="save" parameterType="com.example.spring_study.mvc.domain.dto.BoardRequest" useGeneratedKeys="true" keyProperty="boardSeq">
+    <insert
+            id="save"
+            parameterType="com.example.spring_study.mvc.domain.dto.BoardRequest"
+            useGeneratedKeys="true"
+            keyProperty="boardSeq"
+    >
         /* BoardRepository.save BGN */
         INSERT INTO T_BOARD (
             BOARD_TYPE,
             TITLE,
             CONTENTS,
+            <!--
+            -->
+            DEL_YN,
             REG_DATE
         ) VALUES (
             #{boardType.code},
             #{title},
             #{contents},
+            #{delYn, jdbcType=CHAR, typeHandler=com.example.spring_study.mvc.config.mybatis.typehandler.StringValueBooleanTypeHandler},
             NOW()
         )
         /* BoardRepository.save END */
@@ -89,7 +106,8 @@
         SET
             BOARD_TYPE = #{boardType.code},
             TITLE = #{title},
-            CONTENTS = #{contents}
+            CONTENTS = #{contents},
+            DEL_YN = #{delYn, jdbcType=CHAR, typeHandler=com.example.spring_study.mvc.config.mybatis.typehandler.StringValueBooleanTypeHandler}
         WHERE BOARD_SEQ = #{boardSeq}
         /* BoardRepository.update END */
     </update>

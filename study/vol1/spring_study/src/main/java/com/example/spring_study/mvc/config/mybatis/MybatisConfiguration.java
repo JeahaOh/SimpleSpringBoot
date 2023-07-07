@@ -1,4 +1,4 @@
-package com.example.spring_study.mvc.config;
+package com.example.spring_study.mvc.config.mybatis;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
