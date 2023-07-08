@@ -14,6 +14,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
     
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        /* '/upload/**' -> '/static/upload/' */
+        registry.addResourceHandler("/upload/**").addResourceLocations("classpath:/static/upload/").setCachePeriod(60 * 60 * 24 * 365);
         /* '/html/**' -> '/static/html/' */
         registry.addResourceHandler("/html/**").addResourceLocations("classpath:/static/html/").setCachePeriod(60 * 60 * 24 * 365);
         /* '/js/**' -> '/static/js/' */

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.Properties;
@@ -21,6 +22,7 @@ import java.util.Properties;
  */
 @Slf4j
 @Getter
+@Component
 public class GlobalConfig {
     @Autowired
     ApplicationContext context;
@@ -29,6 +31,7 @@ public class GlobalConfig {
     ResourceLoader resourceLoader;
     
     private String uploadFilePath;
+    private String uploadResourcePath;
     
     private boolean isLocal;
     private boolean isDev;
@@ -57,11 +60,13 @@ public class GlobalConfig {
             Properties properties = PropertiesLoaderUtils.loadProperties(resource);
             log.debug("properties : {}", properties);
             
-            uploadFilePath = properties.getProperty("uploadFile.path");
+            this.uploadFilePath = properties.getProperty("uploadFile.path");
             // log.debug("uploadFilePath : {}", uploadFilePath);
-            
-            sampleSchedule = properties.getProperty("scheduler.sample");
-            log.debug("sampleSchedule : {}", sampleSchedule);
+    
+            this.uploadResourcePath = properties.getProperty("scheduler.resourcePath");
+    
+            this.sampleSchedule = properties.getProperty("scheduler.sample");
+            //log.debug("sampleSchedule : {}", sampleSchedule);
             
             this.isLocal = activeProfile.equals("local");
             this.isDev = activeProfile.equals("dev");
@@ -87,6 +92,4 @@ public class GlobalConfig {
     public String getSampleSchedule() {
         return this.sampleSchedule;
     }
-    
-    
 }

@@ -5,12 +5,14 @@ import com.example.spring_study.mvc.config.web.PageRequestHandleMethodArgumentRe
 import com.example.spring_study.mvc.domain.type.CommonCodeLabelEnum;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -21,7 +23,13 @@ import java.util.Locale;
  * Created by jeaha on 2023/06/27
  */
 @Configuration
+@RequiredArgsConstructor
 public class WebConfiguration implements WebMvcConfigurer {
+    
+    private final GlobalConfig config;
+    
+    private static final String WINDOWS_DIR_PREFIX = "file:///";
+    private static final String LINUX_DIR_PREFIX = "file:";
     
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
@@ -72,6 +80,15 @@ public class WebConfiguration implements WebMvcConfigurer {
     
     @Bean
     public GlobalConfig config() {
-        return new GlobalConfig();
+        return this.config;
+    }
+    
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // static resource uploaded file dir
+        String resourcePattern = config.getUploadResourcePath() + "*";
+        
+        // 아.. 이게 window mac linux 구분이 들어가야...;
+        registry.addResourceHandler(resourcePattern).addResourceLocations(LINUX_DIR_PREFIX + config.getUploadFilePath());
     }
 }
